@@ -17,7 +17,11 @@ Our minimum deliverable is a verilog implementation of a GPU that can display sh
 
 ## Work plan
 **11/28** - Work plan and project proposal written, approved by Benjamin T. Hill
+
 **12/1** - Finish top-level module design
+
 **12/5** - Complete individual components (rasterizer, decoder, pixel operator, etc.) and their testbenches for midpoint check-in, debug debug debug
+
 **12/8**- Debugging and adding additional features
+
 **12/12** - final deliverable due
