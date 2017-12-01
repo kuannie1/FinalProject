@@ -15,7 +15,7 @@ module instructiondecode
 	parameter width = 4,
 	parameter height = 3,
 	parameter misc_amt = 9, // there's usually an "amount" like # of degrees, pixel translation, etc.
-	parameter op_size = 1
+	parameter op_size = 2
 	
 ) (
 	input [3*(width+height) + 25 + op_size + misc_amt - 1:0] instruction,
