@@ -1,20 +1,19 @@
 `include "rasterization.v"
 
 /*
-	Takes in pixels from rasterizing stage and
-	input: pixels
-	output: 
-		
+	Takes in pixels from rasterizing stage and outputs a screen array
+	input: array of pixel x values, pixel y values, red values, green values, and blue values
+	output: a multidimensional array storing 8 bit numbers in a [red,gree,blue] x width x height array		
 */ 
 
 module processPixels
 (
-input xCoord,
-input yCoord,
-input [7:0] red,
-input [7:0] green,
-input 7:0] blue,
-output screenArray
+input [9:0] xCoord [],
+input [8:0] yCoord [],
+input [7:0] red [],
+input [7:0] green [],
+input [7:0] blue [],
+output [7:0] screenArray [2:0][screenWidth-1:0][screenHeight-1:0]
 );
 
 parameter screenWidth = 640;
