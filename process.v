@@ -39,7 +39,9 @@ module processInstruction #(
 									.misc(misc), 
 									.op_code(op_code) 
 									);
+	// calculate 4th point if 
 
 	// use op_code figure out how to process the points to get what you need
+
 
 endmodule
