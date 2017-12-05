@@ -7,8 +7,8 @@
 */ 
 
 module processPixels #(
-	screenWidth = 640,
-	screenHeight = 480
+	parameter screenWidth = 640,
+	parameter screenHeight = 480
 	)
 (
 	input [9:0] xCoord,
@@ -18,11 +18,6 @@ module processPixels #(
 	input [7:0] blue,
 	output [2:0][screenWidth-1:0][screenHeight-1:0] screenArray
 );
-
-// parameter screenWidth = 640;
-// parameter screenHeight = 480;
-
-reg [2:0][screenWidth-1:0][screenHeight-1:0] screenArray;
 
 for (i = 0; i < $size(xCoord); i = i + 1) begin
 	screenArray[0] [xCoord[i]] [yCoord[i]] <= red[i];
