@@ -2,6 +2,8 @@
 
 
 module idecodeTest();
+	reg passedtests;
+
 	reg [56:0] instruction;
 	wire shape;
 	wire [3:0] x1, x2, x3;
@@ -46,41 +48,117 @@ module idecodeTest();
 		$dumpfile("idecode.vcd");
 		$dumpvars();
 
-		instruction = 57'b110000000001111111100000000111111110001111000111100011111; #1000
+		$display("Test case 0");
+		instruction = 57'b100000001111111111000000111111110001111000111100011111110; #1000
 
-		$display("shape: %b", shape);
-		$display("x1: %b, y1: %b", x1, y1);
-		$display("x2: %b, y2: %b", x2, y2);
-		$display("x3: %b, y3: %b", x3, y3);
-		$display("r: %b", r);
-		$display("g: %b", g);
-		$display("b: %b", b);
-		$display("op_code: %b", op_code);
+		if(shape==0 &&(x1==4'b1111) && y1==3'b111 && x2== 4'b1000 && y2==3'b111 && x3==4'b1000 && y3==3'b111 && r== 8'b11111000 && g==8'b00000111 && b==8'b11111110 && op_code==2'b10) begin //testing all parameters
+			passedtests=1;
+			$display("I passed the first test");
+			end
+		else begin
+			$display("I did not pass");
+		end
 
-		$display();
-		instruction = 57'b001111111111111111100000000111111110001111000111100011110; #1000
+		$display("Test case 1: I can change shape");
+		instruction = 57'b100000001111111111000000111111110001111000111100011111111; #1000
 
-		$display("shape: %b", shape);
-		$display("x1: %b, y1: %b", x1, y1);
-		$display("x2: %b, y2: %b", x2, y2);
-		$display("x3: %b, y3: %b", x3, y3);
-		$display("r: %b", r);
-		$display("g: %b", g);
-		$display("b: %b", b);
-		$display("op_code: %b", op_code);
+		if(shape==1 &&(x1==4'b1111) && y1==3'b111 && x2== 4'b1000 && y2==3'b111 && x3==4'b1000 && y3==3'b111 && r== 8'b11111000 && g==8'b00000111 && b==8'b11111110 && op_code==2'b10) begin //testing all parameters
+			passedtests=passedtests+1;
+			$display("I passed this test");
+			end
+		else begin
+			$display("I did not pass");
+		end
 
+		$display("Test case 2: I can change my coordinates");
+		instruction = 57'b100000001111111111000000111111110001111000111100011101111; #1000
 
-		$display();
-		instruction_new = 47'b10000000001111111100000000111111110011001100111; #1000
+		if(shape==1 &&(x1==4'b0111) && y1==3'b111 && x2== 4'b1000 && y2==3'b111 && x3==4'b1000 && y3==3'b111 && r== 8'b11111000 && g==8'b00000111 && b==8'b11111110 && op_code==2'b10) begin //testing all parameters
+			passedtests=passedtests+1;
+			$display("I passed this test");
+			end
+		else begin
+			$display("I cannot change x1 correctly");
+		end
 
-		$display("shape: %b", shape);
-		$display("x1: %b, y1: %b", x1_new, y1_new);
-		$display("x2: %b, y2: %b", x2_new, y2_new);
-		$display("x3: %b, y3: %b", x3_new, y3_new);
-		$display("r: %b", r_new);
-		$display("g: %b", g_new);
-		$display("b: %b", b_new);
-		$display("op_code: %b", op_code_new);
+		$display("Test case 2: I can change my coordinates");
+		instruction = 57'b100000001111111111000000111111110001111000111100010111111; #1000
+
+		if(shape==1 &&(x1==4'b1111) && y1==3'b101 && x2== 4'b1000 && y2==3'b111 && x3==4'b1000 && y3==3'b111 && r== 8'b11111000 && g==8'b00000111 && b==8'b11111110 && op_code==2'b10) begin //testing all parameters
+			passedtests=passedtests+1;
+			$display("I passed this test");
+			end
+		else begin
+			$display("I cannot change y1 correctly");
+		end
+
+		$display("Test case 2: I can change my coordinates");
+		instruction = 57'b100000001111111111000000111111110001111000111101011111111; #1000
+
+		if(shape==1 &&(x1==4'b1111) && y1==3'b111 && x2== 4'b1010 && y2==3'b111 && x3==4'b1000 && y3==3'b111 && r== 8'b11111000 && g==8'b00000111 && b==8'b11111110 && op_code==2'b10) begin //testing all parameters
+			passedtests=passedtests+1;
+			$display("I passed this test");
+			end
+		else begin
+			$display("I cannot change x2 correctly");
+		end
+
+		$display("Test case 2: I can change my coordinates");
+		instruction = 57'b100000001111111111000000111111110001111000110100011111111; #1000
+
+		if(shape==1 &&(x1==4'b1111) && y1==3'b111 && x2== 4'b1000 && y2==3'b101 && x3==4'b1000 && y3==3'b111 && r== 8'b11111000 && g==8'b00000111 && b==8'b11111110 && op_code==2'b10) begin //testing all parameters
+			passedtests=passedtests+1;
+			$display("I passed this test");
+			end
+		else begin
+			$display("I cannot change y2 correctly");
+		end
+
+		$display("Test case 2: I can change my coordinates");
+		instruction = 57'b100000001111111111000000111111110001111001111100011111111; #1000
+
+		if(shape==1 &&(x1==4'b1111) && y1==3'b111 && x2== 4'b1000 && y2==3'b111 && x3==4'b1001 && y3==3'b111 && r== 8'b11111000 && g==8'b00000111 && b==8'b11111110 && op_code==2'b10) begin //testing all parameters
+			passedtests=passedtests+1;
+			$display("I passed this test");
+			end
+		else begin
+			$display("I cannot change x3 correctly");
+		end
+
+		$display("Test case 3: I can change my color");
+		instruction = 57'b100000001110111111000000001110010001111000111100011111111; #1000
+
+		if(shape==1 &&(x1==4'b1111) && y1==3'b111 && x2== 4'b1000 && y2==3'b111 && x3==4'b1000 && y3==3'b111 && r== 8'b11001000 && g==8'b00000001 && b==8'b01111110 && op_code==2'b10) begin //testing all parameters
+			passedtests=passedtests+1;
+			$display("I passed this test");
+			end
+		else begin
+			$display("I cannot change color correctly");
+		end
+
+		$display("Test case 3: I can change my op_code");
+		instruction = 57'b010000001110111111000000001110010001111000111100011111111; #1000
+
+		if(shape==1 &&(x1==4'b1111) && y1==3'b111 && x2== 4'b1000 && y2==3'b111 && x3==4'b1000 && y3==3'b111 && r== 8'b11001000 && g==8'b00000001 && b==8'b01111110 && op_code==2'b01) begin //testing all parameters
+			passedtests=passedtests+1;
+			$display("I passed this test");
+			end
+		else begin
+			$display("I cannot change my op_code correctly");
+		end
+
+		$display("Test case 4: I can be parameterized!");
+		instruction_new = 47'b01111000001010101010101010010101010100000000000; #1000
+
+		if(shape==0 &&(x1==2'b00) && y1==2'b00 && x2== 2'b00 && y2==2'b00 && x3==2'b00 && y2==3'b01 && r== 8'b10101010 && g==8'b01010100 && b==8'b01010101 && op_code==2'b01) begin //testing all parameters
+			passedtests=passedtests+1;
+			$display("I passed this test");
+		end
+		else begin
+			$display("My parameters are wonky friend");
+		end
+
+		$display("I passed %b tests", passedtests);
 
 
 	end

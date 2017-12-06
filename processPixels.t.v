@@ -13,6 +13,9 @@ wire [7:0] screenArray [2:0][screenWidth-1:0][screenHeight-1:0];
 processPixels procPixels(.xCoord(xCoord),.yCoord(yCoord),.red(red),.green(green),.blue(blue).screenArray(screenArray));
 
 initial begin
+$dumpfile("processPixels.vcd");
+$dumpvars();
+
 red[NumbPixels-1:0] <= 8'b01010101;
 green[NumbPixels-1:0] <= 8'b11110000;
 blue[NumbPixels-1:0] <= 8'b00001111;
