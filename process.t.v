@@ -14,7 +14,7 @@ module processTest();
 	wire[1:0] op_code;
 
 
-module processInstruction #( 
+module testprocessInstruction #( 
 	parameter width = 4,
 	parameter height = 3,
 	parameter misc_amt = 9,

@@ -1,5 +1,4 @@
 `include "process.v"
-`include "instructiondecode.v"
 `include "processPixels.v"
 `include "rasterization.v"
 

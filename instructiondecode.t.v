@@ -120,8 +120,7 @@ module idecodeTest();
 		if(shape==1 &&(x1==4'b1111) && y1==3'b111 && x2== 4'b1000 && y2==3'b111 && x3==4'b1001 && y3==3'b111 && r== 8'b11111000 && g==8'b00000111 && b==8'b11111110 && op_code==2'b10) begin //testing all parameters
 			passedtests=passedtests+1;
 			$display("I passed this test");
-			end
-		else begin
+			end else begin
 			$display("I cannot change x3 correctly");
 		end
 
@@ -131,8 +130,7 @@ module idecodeTest();
 		if(shape==1 &&(x1==4'b1111) && y1==3'b111 && x2== 4'b1000 && y2==3'b111 && x3==4'b1000 && y3==3'b111 && r== 8'b11001000 && g==8'b00000001 && b==8'b01111110 && op_code==2'b10) begin //testing all parameters
 			passedtests=passedtests+1;
 			$display("I passed this test");
-			end
-		else begin
+			end else begin
 			$display("I cannot change color correctly");
 		end
 
@@ -142,20 +140,19 @@ module idecodeTest();
 		if(shape==1 &&(x1==4'b1111) && y1==3'b111 && x2== 4'b1000 && y2==3'b111 && x3==4'b1000 && y3==3'b111 && r== 8'b11001000 && g==8'b00000001 && b==8'b01111110 && op_code==2'b01) begin //testing all parameters
 			passedtests=passedtests+1;
 			$display("I passed this test");
-			end
-		else begin
+			$display(passedtests);
+			end else begin
 			$display("I cannot change my op_code correctly");
 		end
 
 		$display("Test case 4: I can be parameterized!");
 		instruction_new = 47'b01111000001010101010101010010101010100000000000; #1000
 
-		if(shape==0 &&(x1==2'b00) && y1==2'b00 && x2== 2'b00 && y2==2'b00 && x3==2'b00 && y2==3'b01 && r== 8'b10101010 && g==8'b01010100 && b==8'b01010101 && op_code==2'b01) begin //testing all parameters
+		if(shape_new==0 &&(x1_new==2'b00) && y1_new==2'b00 && x2_new== 2'b00 && y2_new==2'b00 && x3_new==2'b00 && y2_new==3'b01 && r_new== 8'b01010101 && g_new==8'b10101010 && b_new==8'b10101010 && op_code_new==2'b01) begin //testing all parameters
 			passedtests=passedtests+1;
 			$display("I passed this test");
-		end
-		else begin
-			$display("My parameters are wonky friend");
+		end else begin
+			$display("Changing my parameters does not work");
 		end
 
 		$display("I passed %b tests", passedtests);
