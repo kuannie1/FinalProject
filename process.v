@@ -1,4 +1,3 @@
-`include "instructiondecode.v"
 /*
 	Process the instruction content
 	input: shape, coordinates, and op_code
@@ -25,6 +24,7 @@ module processInstruction #(
 	input [height-1:0] y1,
 	input [height-1:0] y2,
 	input [height-1:0] y3,
+
 	output reg [4*(width + height)-1:0] points
 	);
 
@@ -41,6 +41,7 @@ module processInstruction #(
 
 			end
 		endcase
+
 
 	end
 

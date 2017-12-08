@@ -1,8 +1,8 @@
-`include "rasterization.v"
+//`include "rasterization.v"
 `include "TMDS_encoder.v"
 
 /*
-	Takes in pixels from rasterizing stage and outputs a screen array
+	Takes in pixels from rasterizing stage and outputs an HDMI video signal of the screen
 	input: array of pixel x values, pixel y values, red values, green values, and blue values
 	output: a multidimensional array storing 8 bit numbers in a [red,gree,blue] x width x height array		
 */ 
@@ -34,33 +34,25 @@ integer i = 0;
 
 
 //Want all of these things to happen at once on every pixel clock positive edge:
-always @(posedge pixclk) DrawArea <= (CounterX<640) && (CounterY<480); //DrawArea == 1 if counter is within the draw area - HDMI has some off-screen area so that timing works out
+always @(posedge pixclk) begin
+	
+	DrawArea <= (CounterX<640) && (CounterY<480); //DrawArea == 1 if counter is within the draw area - HDMI has some off-screen area so that timing works out
 
-// increment both counters until counter X reaches 799 and then overflow back to 0 and counter Y reaches 524 (800 x 525 pixels)- these numbers are chosen so that total number of pixels
-// including off-screen area has the appropriate refresh rate (60Hz) with HDMI lowest allowable pixel clock (25MHz) and so that all timing requirements are met
-always @(posedge pixclk) CounterX <= (CounterX==799) ? 0 : CounterX+1; 
-always @(posedge pixclk) if(CounterX==799) CounterY <= (CounterY==524) ? 0 : CounterY+1;
+	// increment both counters until counter X reaches 799 and then overflow back to 0 and counter Y reaches 524 (800 x 525 pixels)- these numbers are chosen so that total number of pixels
+	// including off-screen area has the appropriate refresh rate (60Hz) with HDMI lowest allowable pixel clock (25MHz) and so that all timing requirements are met
+	CounterX <= (CounterX==799) ? 0 : CounterX+1; 
+	if(CounterX==799) CounterY <= (CounterY==524) ? 0 : CounterY+1;
 
-// hSync and vSync are generated off of the counter. 
-always @(posedge pixclk) hSync <= (CounterX>=656) && (CounterX<752);
-always @(posedge pixclk) vSync <= (CounterY>=490) && (CounterY<492);
+	// hSync and vSync are generated off of the counter. 
+	hSync <= (CounterX>=656) && (CounterX<752);
+	vSync <= (CounterY>=490) && (CounterY<492);
 
-//if counterX and counterY both equal the next value in xCoord and yCoord vectors then assign red, green, and blue to the same index in red_vect, green_vect, and blue_vect.
-//if current counter values are not in the xCoord and yCoord vectors then default to background color values
-always @(posedge pixclk)
-begin
-	if(CounterX==xCoord[i] && CounterY==yCoord[i])red <= ? red_vect[i] : background_red;
-end
-
-always @(posedge pixclk)
-begin
-	if(CounterX==xCoord[i] && CounterY==yCoord[i])green <= ? green_vect[i] : background_green;
-end
-
-always @(posedge pixclk)
-begin
-	if(CounterX==xCoord[i] && CounterY==yCoord[i])blue <= ? blue_vect[i] : background_blue;
-	if(i==$size(xCoord) i <= ? 0 : i + 1;
+	//if counterX and counterY both equal the next value in xCoord and yCoord vectors then assign red, green, and blue to the same index in red_vect, green_vect, and blue_vect.
+	//if current counter values are not in the xCoord and yCoord vectors then default to background color values
+	red <= (CounterX == xCoord[i] && CounterY==yCoord[i]) ? red_vect[i] : background_red;
+	green <= (CounterX == xCoord[i] && CounterY==yCoord[i]) ? green_vect[i] : background_green;
+	blue <= (CounterX==xCoord[i] && CounterY==yCoord[i]) ? blue_vect[i] : background_blue;
+	i <= (i==$size(xCoord)) ? 0 : (i + 1);
 end
 
 
@@ -77,10 +69,9 @@ TMDS_encoder encode_blue(.clk(pixclk), .VD(blue), .CD({vSync,hSync}), .VDE(DrawA
 DCM_SP #(.CLKFX_MULTIPLY(10)) DCM_TMDS_inst(.CLKIN(pixclk), .CLKFX(clk_TMDS), .RST(1'b0));
 
 
-always @(posedge clk_TMDS) TMDS_shift_load <= (TMDS_bit_counter==4'd9);// if bit counter reaches 9, i.e. all 10 color bits have been output, grab the color bits for the next pixel
+always @(posedge clk_TMDS) begin
+	TMDS_shift_load <= (TMDS_bit_counter==4'd9);// if bit counter reaches 9, i.e. all 10 color bits have been output, grab the color bits for the next pixel
 
-always @(posedge clk_TMDS)
-begin
 	TMDS_shift_red   <= TMDS_shift_load ? TMDS_red   : TMDS_shift_red  [9:1];		// If bit counter has been reached, i.e. TMDS_shift_load is asserted, grab next pixel's color data
 	TMDS_shift_green <= TMDS_shift_load ? TMDS_green : TMDS_shift_green[9:1];		// otherwise shift one bit off the end and output that bit through the differential buffer defined
 	TMDS_shift_blue  <= TMDS_shift_load ? TMDS_blue  : TMDS_shift_blue [9:1];		// below. Do this for all 3 colors
