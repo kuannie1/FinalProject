@@ -1,5 +1,5 @@
-// ALU -- Adder
-`include "ALU/logic32bits.v"
+// Adder
+// `include "logic32bits.v"
 
 // define gates with delays
 `define AND and #30
