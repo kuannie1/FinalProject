@@ -28,6 +28,7 @@ reg [3:0] TMDS_bit_counter=0;  // counter for color bit synchronization (counts 
 reg [9:0] TMDS_shift_red=0, TMDS_shift_green=0, TMDS_shift_blue=0;
 reg TMDS_shift_load=0;
 reg [7:0] background_red = 0, background_green = 0, background_blue = 0; //background color values
+integer i = 0;
 
 
 //Want all of these things to happen at once on every pixel clock positive edge:
@@ -57,9 +58,8 @@ end
 always @(posedge pixclk)
 begin
 	if(CounterX==xCoord[i] && CounterY==yCoord[i])blue <= ? blue_vect[i] : background_blue;
+	if(i==$size(xCoord) i <= ? 0 : i + 1;
 end
-// i = i +1
-//but what happens when it gets to the end? would a for loop from i =1 to length(xCoord) work? But don't want to check every index every time, only need to index if there is a match since pixels are stored in order
 
 
 //TMDS Encode all the signals - converts 8 bit color data value to 10 bit TMDS encoded color value
