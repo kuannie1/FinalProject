@@ -1,4 +1,3 @@
-`include "instructiondecode.v"
 /*
 	Process the instruction content
 	input: shape, coordinates, and op_code
@@ -25,20 +24,24 @@ module processInstruction #(
 	input [height-1:0] y1,
 	input [height-1:0] y2,
 	input [height-1:0] y3,
-	output [shape+1:0][1:0] points //2-D array
+	output [3+shape:0] points //array not possible, only returning coordinates of additional point if necessary
 
 	);
-	points[0]<=[x1,y1];
-	points[1]<=[x2,y2];
-	points[2]<=[x3,y3];
+
 	
 	always @(shape)begin
-		0: begin //return points
+		case(shape)
+		
+		triangle: begin 
+		extrapoint<=0; //return points 1, 2, 3, and extrapoint is void
 		end
 
-		1: begin 
-		points[3]<=[x2,y3]; //return additional coordinate
+		square: begin 
+		//extrapoint<= ; //return additional coordinate from C code
 		end
+
+		default:$display("error in shape choice");
+	endcase
 
 	end
 

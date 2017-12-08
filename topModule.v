@@ -1,6 +1,6 @@
 `include "process.v"
 `include "processPixels.v"
-`include "rasterization.v"
+//`include "rasterization.v" //included in "processPixels.v"
 
 module topModule #(
 	parameter width = 4,
