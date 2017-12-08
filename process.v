@@ -25,20 +25,22 @@ module processInstruction #(
 	input [height-1:0] y1,
 	input [height-1:0] y2,
 	input [height-1:0] y3,
-	output [shape+1:0][1:0] points //2-D array
-
+	output reg [4*(width + height)-1:0] points
 	);
-	points[0]<=[x1,y1];
-	points[1]<=[x2,y2];
-	points[2]<=[x3,y3];
-	
-	always @(shape)begin
-		0: begin //return points
-		end
 
-		1: begin 
-		points[3]<=[x2,y3]; //return additional coordinate
-		end
+	always @(shape) begin
+		case(shape) 
+			1: begin 
+				points[3*(width+height)+width-1 : 3*(width+height)] = x2;
+				points[4*(width+height)-1:3*(width+height) + width] = y3;
+				points[3*(width+height)-1:0] = {y3, x3, y2, x2, y1, x1};
+			end
+
+			0: begin //return points
+				points[4*(width+height)-1:0] = {{height{1'b0}}, {width{1'b0}}, y3, x3, y2, x2, y1, x1};
+
+			end
+		endcase
 
 	end
 

@@ -25,7 +25,9 @@ reg [7:0] red, green, blue;
 wire [9:0] TMDS_red, TMDS_green, TMDS_blue;
 wire clk_TMDS;  // used for 250 MHz clock
 reg [3:0] TMDS_bit_counter=0;  // counter for color bit synchronization (counts from 0 - 9 and then resets back to 0)
-reg [9:0] TMDS_shift_red=0, TMDS_shift_green=0, TMDS_shift_blue=0;
+reg [9:0] TMDS_shift_red=0;
+reg [9:0] TMDS_shift_green=0;
+reg [9:0] TMDS_shift_blue=0;
 reg TMDS_shift_load=0;
 reg [7:0] background_red = 0, background_green = 0, background_blue = 0; //background color values
 integer i = 0;

@@ -1,8 +1,4 @@
 `include "instructiondecode.v"
-`include "Arithmetic/adder.v"
-`include "Arithmetic/slt.v"
-`include "Arithmetic/logic32bits.v"
-
 /*
 	Process the instruction content
 	input: shape, coordinates, and op_code
