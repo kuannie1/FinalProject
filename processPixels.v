@@ -11,12 +11,12 @@ module processPixels #(
 	parameter screenHeight = 480
 	)
 (
+	output [2:0] screenArray [screenWidth-1:0], // [screenHeight-1:0]
 	input [9:0] xCoord,
 	input [8:0] yCoord,
 	input [7:0] red,
 	input [7:0] green,
-	input [7:0] blue,
-	output [2:0][screenWidth-1:0][screenHeight-1:0] screenArray
+	input [7:0] blue
 );
 
 for (i = 0; i < $size(xCoord); i = i + 1) begin
@@ -24,3 +24,4 @@ for (i = 0; i < $size(xCoord); i = i + 1) begin
 	screenArray[1] [xCoord[i]] [yCoord[i]] <= green[i];
 	screenArray[2] [xCoord[i]] [yCoord[i]] <= blue[i];
 end
+endmodule
