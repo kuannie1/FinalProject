@@ -9,10 +9,11 @@ module processTest();
 	wire[27:0] pts;
 
 	// this is a square
-	processInstruction #(.shape(1)) testsquare(
+	processInstruction testsquare(
 											.x1(x1), .y1(y1), // 7 bits
 											.x2(x2), .y2(y2), // 7 bits
 											.x3(x3), .y3(y3), // 7 bits
+											.shape(1),
 											.points(pts) // 28 bits
 											); 
 
@@ -21,10 +22,11 @@ module processTest();
 	wire[15:0] pts_new;
 
 	// another square
-	processInstruction #(.width(2), .height(2), .shape(1)) parameterchange( 
+	processInstruction #(.width(2), .height(2)) parameterchange( 
 																	.x1(x1_new), .y1(y1_new), // 4 bits
 																	.x2(x2_new), .y2(y2_new), // 4 bits
 																	.x3(x3_new), .y3(y3_new), // 4 bits
+																	.shape(1),
 																	.points(pts_new) // 16 bits
 																); // total: 
 

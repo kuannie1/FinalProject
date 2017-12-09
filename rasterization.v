@@ -17,6 +17,8 @@ input coordB_X,
 input coordB_Y,
 input coordC_X,
 input coordC_Y,
+input op_code,
+input shape,
 //The output pixels register is always large enough to hold all coordinate values on the screen
 output reg [width*height-1:0] pixel_x_coords,
 output reg [width*height-1:0] pixel_y_coords

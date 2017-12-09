@@ -9,13 +9,15 @@
 `define triangle 1'b0;
 `define square 1'b1;
 
+`define opFILL 2'b1; // the first op instruction is to fill
+
 
 module processInstruction #( 
 	parameter width = 4,
-	parameter height = 3,
-	parameter misc_amt = 9,
-	parameter op_size = 2,
-	parameter shape=0
+	parameter height = 3
+	// // only needed if we do transformations on the points
+	// parameter misc_amt = 9,
+	// parameter op_size = 2
 ) (	
 
 	input [width-1:0] x1,
@@ -24,7 +26,7 @@ module processInstruction #(
 	input [height-1:0] y1,
 	input [height-1:0] y2,
 	input [height-1:0] y3,
-
+	input shape,
 	output reg [4*(width + height)-1:0] points
 	);
 
