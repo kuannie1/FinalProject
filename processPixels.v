@@ -52,7 +52,7 @@ always @(posedge pixclk) begin
 	red <= (CounterX == xCoord[i] && CounterY==yCoord[i]) ? red_vect[i] : background_red;
 	green <= (CounterX == xCoord[i] && CounterY==yCoord[i]) ? green_vect[i] : background_green;
 	blue <= (CounterX==xCoord[i] && CounterY==yCoord[i]) ? blue_vect[i] : background_blue;
-	i <= (i==$size(xCoord)) ? 0 : (i + 1);
+	i <= (xCoord[i+1] == 10'b1111111111) ? 0 : (i + 1);
 end
 
 
