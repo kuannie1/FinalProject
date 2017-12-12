@@ -15,7 +15,9 @@ module topModule #(
 
 input [3*(width+height) + 25 + op_size + misc_amt - 1:0] instruction,
 output [2:0] TMDSp, TMDSn, 
-output TMDSp_clock, TMDSn_clock
+output TMDSp_clock, TMDSn_clock,
+output [(width*height-1)*(width-1):0] pixel_x_coords,
+output [(width*height-1)*(height-1):0] pixel_y_coords
 );
 
 wire shape;
