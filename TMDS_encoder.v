@@ -1,5 +1,5 @@
 module TMDS_encoder(
-	input clk,	// clock signal, positive edge triggered
+	input pixclk,	// clock signal, positive edge triggered
 	input [7:0] VD,  // video data (red, green or blue - 8 bits)
 	input [1:0] CD,  // control data (2 bits)
 	input VDE,  // video data enable, to choose between CD (when VDE=0) and VD (when VDE=1) - i.e. offscreen area can be control data
@@ -30,7 +30,7 @@ wire [9:0] TMDS_data = {invert_q_m, q_m[8], q_m[7:0] ^ {8{invert_q_m}}};
 // From table in wikipedia page on TMDS encoding
 wire [9:0] TMDS_code = CD[1] ? (CD[0] ? 10'b1010101011 : 10'b0101010100) : (CD[0] ? 10'b0010101011 : 10'b1101010100);
 
-always @(posedge clk) TMDS <= VDE ? TMDS_data : TMDS_code;
-always @(posedge clk) diff_q_m_acc <= VDE ? diff_q_m_acc_new : 4'h0;
+always @(posedge pixclk) TMDS <= VDE ? TMDS_data : TMDS_code;
+always @(posedge pixclk) diff_q_m_acc <= VDE ? diff_q_m_acc_new : 4'h0;
 endmodule
 
