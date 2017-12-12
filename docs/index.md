@@ -28,6 +28,7 @@ We tackled this problem by defining the goal we wanted from our project: the abi
 
 * Our basic shapes are triangles and rectangles, so we need another bit to distinguish between the two
 
+![Instruction Set](ISA.jpg)
 
 After considering all the things we needed to get all the necessary points for the rasterization step. We made a new module called processInstruction that calculates the points needed given the operation in the instruction. 
 
@@ -35,7 +36,6 @@ After considering all the things we needed to get all the necessary points for t
 ### Second Step - Rasterization
 The rasterization step is able to take in the 3 or 4 points specified by processInstruction and obtain all the pixels within the boundaries of those points. The procedure in stage depends on the shape, because calculating whether the inputs enclose a pixel is slightly more complex for a triangle than for a rectangle. 
 
-(make a diagram for splitting a triangle in a 2-D plane)
 
 
 ### Third Step - Displaying Points on HDMI
