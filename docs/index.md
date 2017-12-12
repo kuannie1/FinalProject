@@ -55,7 +55,7 @@ Displaying the 8-bit color involves encoding the 8 bit color values of each pixe
 The 10 bit TMDS encoded color values are then serialized and synchronized to the HDMI pixel clock and output over 3 differential data lines (one for red, one for green, and one for blue). The pixel clock is also output differentially, following the HDMI specification.
 
 ### Final Step: Transitioning to the FPGA
-When synthesizing our code onto the FPGA, we needed a TMDS function as well as to generate a clock. This gave us an opportunity to delve into the world of Vivado libraries.
+When synthesizing our code onto the FPGA, we needed to set up port definitions in a Vivado constraints file as well as set up a Mixed-Mode Clock Manager (MMCM) module to generate both the 25 MHz pixel clock and the 250 MHz TMDS serializer clocks from the 125 MHz system clock.
 
 ### Verifying These Steps
 We constructed testbenches for each component to make sure they worked as expected. We approached first and second steps by inputting predefined instructions for various screen widths and heights. These predefined instructions would make it easy for us to see if we obtained the right coordinates, shape value, and color values.
