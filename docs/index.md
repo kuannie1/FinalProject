@@ -93,3 +93,4 @@ We can extend our GPU to ...
 * [Peter Alexander Greczner’s implementation of a GPU](https://people.ece.cornell.edu/land/courses/eceprojectsland/STUDENTPROJ/2009to2010/pag42/Greczner_Meng_Final.pdf)
 * [How A GPU Works](https://www.cs.cmu.edu/afs/cs/academic/class/15462-f11/www/lec_slides/lec19.pdf)
 * [EE Wiki Description of TMDS Encoding](https://eewiki.net/pages/viewpage.action?pageId=36569119)
+* [Wikipedia Article on TMDS Encoding](https://en.wikipedia.org/wiki/Transition-minimized_differential_signaling)
