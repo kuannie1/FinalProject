@@ -54,7 +54,7 @@ Displaying the 8-bit color involves encoding the 8 bit color values of each pixe
 The 10 bit TMDS encoded color values are then serialized and synchronized to the HDMI pixel clock and output over 3 differential data lines (one for red, one for green, and one for blue). The pixel clock is also output differentially, following the HDMI specification.
 
 ### Final Step: Transitioning to the FPGA
-
+When synthesizing our code onto the FPGA, we needed a TMDS function as well as to generate a clock. This gave us an opportunity to delve into the world of Vivado libraries.
 
 ### Verifying These Steps
 We constructed testbenches for each component to make sure they worked as expected. We approached first and second steps by inputting predefined instructions for various screen widths and heights. These predefined instructions would make it easy for us to see if we obtained the right coordinates, shape value, and color values.
@@ -79,11 +79,18 @@ This project was especially new for each of us, so we faced a few challenges alo
 
 ### Before You Start, Be Sure You Know:
 * If you are starting from scratch, make sure your verilog modules can communicate with each other seamlessly
-* HDMI has tricky input and output specifications
-* Using while loops and 2D arrays may be tempting, but they are almost impossible to synthesize in FPGA
+* HDMI has tricky input and output specifications, specifically that it does not accept 2-D arrays. This makes working with matrices quite difficult to work with. You will need creative work-arounds
+* Using while loops and 2D arrays may be tempting, but they are almost impossible to synthesize in FPGA. Once again, you will need creative work-arounds, such as using a fixed for loop
+* Even if a function compiles in verilog, it may not synthesize once put onto an FPGA
 
 ### Possible Next Steps:
-* We can extend our GPU to ...
+We can extend our GPU to ...
+
+* Draw more shapes and perform actions on them. Our original goal was to create a GPU that could draw a rectangle or triangle and be able to perform different operations on them. We were not able to implement because of the difficulties of performing transformations in verilog. However, in the future we would have liked to have been able to rotate and flip multiple different shapes that we are able to define.
+
+* Run multiple processes at once. In a real GPU, there are many cores that are able to perform in parallel. This would have enabled us to draw multiple shapes at once, or perform operations on a shape while another was being drawn. This would have made our GPU behave much more similarly to an actual GPU. While we originally intended to have one or two cores running in parallel, this was definitely a stretch goal for us.
+
+* Communicate with a CPU. While, for the purposes of this project, we blackboxed the CPU, in a real computer, the GPU and CPU interface with each other, with the CPU giving the GPU commands, while the GPU performs calculations and executes the commands. In the future, it would have been cool working with that interface between parts.
 
 ### Resources Used
 * 
