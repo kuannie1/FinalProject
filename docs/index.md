@@ -57,46 +57,17 @@ The 10 bit TMDS encoded color values are then serialized and synchronized to the
 ### Final Step: Transitioning to the FPGA
 When synthesizing our code onto the FPGA, we needed to set up port definitions in a Vivado constraints file as well as set up a Mixed-Mode Clock Manager (MMCM) module to generate both the 25 MHz pixel clock and the 250 MHz TMDS serializer clocks from the 125 MHz system clock.
 
-### Result from simpler rasterization module that uses synthesizeable for loop
-
-After hours of wasted effort and frustration, we realized that while loop is not synthesizeable in verilog. The original implementation of rasterization module relied heavily on while loop to compute pixels that would make up the displayed shape, so we had to come up with an alternative way to achieve the same task. The new approach was to utilize an array the size of a screen that we will be displaying our shape to, and going through each cell of the array to determine whether the pixel at that location is used to make up the shape.
-
-The main issue with while loop and verilog was that there is no way for a verilog compiler to know how many times a while loop will be executed. Since everything in the verilog code has to be synthesized to a physical component, this was a huge problem. We circumvented this issue by creating an array that we know the size of and using for loops that we explictly define the number of iterations. 
-
-This alternative approach solved our original issue, but unfornately we did not have enough time at the end of the project to expand this idea. We had to settle with very simple rasterization that can pixelize only a rectangle.
-
-For the sake of simplicity, say that we have a 4 by 3 pixels board like shown below:
-
-|0|1|2|3|
-|4|5|6|7|
-|8|9|10|11|
-
-Following waveform is the output of the rasterization module. It was given point 1 and 11 as two coordinates that define a rectangle.
-
-![Rasterization waveform output](rasterization_waveform.png)
-
-Notice that the module correctly rasterized the rectangle by leaving out left-most column, which is represented by 0 signal from wire 0, 4, and 8.
-
-### Verifying These Steps
-We constructed testbenches for each component to make sure they worked as expected. We approached first and second steps by inputting predefined instructions for various screen widths and heights. These predefined instructions would make it easy for us to see if we obtained the right coordinates, shape value, and color values.
-
-(Show an example of a instructiondecode test)
-
-After verifying the working condition of the individual processinstruction, instructiondecode, and rasterize modules, we constructed a top-level module that initializes all of these modules and used GTKWave to make sure the outputs behave as expected. 
-
-(show GTKWave Screenshots here)
-
 ## Some Results
 We constructed testbenches for each component to make sure they worked as expected. We approached first and second steps by inputting predefined instructions for various screen widths and heights. These predefined instructions would make it easy for us to see if we obtained the right coordinates, shape value, and color values.
 
-![GTKWave Output](idgtk.png)
+![GTKWave Output](idgtkwave.png)
 Wave-Viewer Output For the Instruction Decode Testbench
 
 
 After verifying the working condition of the individual processinstruction, instructiondecode, and rasterize modules, we constructed a top-level module that initializes all of these modules and used GTKWave to make sure the outputs behave as expected. 
 
-
-
+We also tried synthesizing our top level module to test the HDMI display and TMDS encoding modules. We successfully generated HDMI video signals, however there is some sort of timing misalignment that is creating unwanted gradients in the display background color as seen in the image below.
+![Output from our GPU being Displayed on HDMI Screen](HDMI_display.jpg)
 
 
 ## Trying This At Home
