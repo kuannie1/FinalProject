@@ -13,7 +13,7 @@ After deciding to pursue a GPU project, we looked up resources about how typical
 
 ## How Our GPU Works
 
-![Flow Chart](diagram.jpg)
+![Flow Chart](TopLevelGPU.jpeg)
 
 We constructed verilog modules for each of the stages listed above. 
 **instructiondecode**: In instructiondecode.v. This module parses the incoming instruction by index. 
@@ -67,7 +67,7 @@ Wave-Viewer Output For the Instruction Decode Testbench
 After verifying the working condition of the individual processinstruction, instructiondecode, and rasterize modules, we constructed a top-level module that initializes all of these modules and used GTKWave to make sure the outputs behave as expected. 
 
 
-![Output from our GPU on HDMI Screen](HDMI_display.jpg)
+
 
 
 ## Trying This At Home
