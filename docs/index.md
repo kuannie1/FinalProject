@@ -1,87 +1,43 @@
-# CompArch Final Project
+# Displaying Shapes With A GPU
 
-The goal of the final project is for you to explore a topic of interest within Computer Architecture, driven by your personal learning goals. This could build on and extend something we discussed in class, or dive into some other area of Computer Architecture (broadly defined).
+## Introduction
 
-You may work in teams of any size, as long as they are appropriately scaled for your proposed project. Groups with > 4 members will face heavy skepticism about meeting this requirement. 
+We implemented a rudimentary graphics processing unit capable of creating and displaying basic shapes.
 
-In terms of scale, this is not a months-long capstone but rather more like an extended Lab. You will have about 2 weeks to complete it, and it will comprise 15% of your final grade. Be ambitious but realistic.
+The graphics processing unit that we designed are comprised of few simple and basic components that does basic GPU functionalities. Those components are instruction decoder, instruction processor, rasterizer, and pixel display module. With the GPU that we created, we can turn a shape defined in terms of coordinates into a collection of pixels that can be showed in a display.
 
-## Timeline
 
--	Nov 17 (in class) – project ideation and team formation fair
--	Nov 28 (in class) – draft project proposal due , consultations with teams
--	Nov 29 – revised project proposal and work plan due
--	Dec 5 – mid-point check in (self-defined in work plan, highly recommended)
--	Dec 12 – final project due
+We decided to work on GPU’s because we wanted to build upon the skills that we had learned from completing our CPU’s. We wanted to make something more tangible that we had built as well. We also wanted to create something using verilog as well. We came across a description of what a GPU was and thought that it would be cool to work on a part that is so necessary for contemporary computers.
 
-## Proposal (10%)
-Your project proposal should be about 1-2 pages, and must include:
+After deciding to pursue a GPU project, we looked up resources about how typical GPUs work. We were particularly inspired by Peter Alexander Greczner’s implementation of a GPU.*, because he used a reduced instruction set to construct pictures out of basic shapes (triangles, rectangles, etc). Using this as an inspiration, we decided on a similar, reduced instruction set consisting of drawing rectangles and triangles and filling them in with specific colors.
 
--	Project title
--	Team members
--	Brief description of project (1-3 paragraphs)
--	2-3 references you plan to use
--	Minimum, planned, and stretch deliverables
--	Work plan (by Tuesday)
+* His work can be found here: https://people.ece.cornell.edu/land/courses/eceprojectsland/STUDENTPROJ/2009to2010/pag42/Greczner_Meng_Final.pdf
 
-We will discuss your proposal in class on November 28 (first class after break). These meetings will be quick and to-the-point, so you must come prepared with a printed out copy of your proposal. You should have done some background research by this point and have a good idea of your planned project trajectory.
+## How Our GPU Works
 
-Based on the feedback from this meeting, you will revise your proposal and submit the final version including a work plan the following day.
+###First Step - Processing the Instruction
+We tackled this problem by defining the goal we wanted from our project: the ability to construct basic shapes using a custom instruction set. In the beginning, we defined our instruction set with a few constraints in mind:
 
-## Documentation (55%)
-The documentation counts for 55% of your grade whether you succeed at your goal or not.  Did you shoot for the moon and land among the harsh vacuum of space?  You still learned something from the process, and as long as you document it well, you will get full credit.
+..* We would represent colors with RGB, which meant that we needed 8 bits for each Red, Green, and Blue value. This means we need 24 bits allocated for these values
 
-Documentation should be posted in the form of a project website (PDF or MarkDown in a repo can also be acceptable depending on the project) and must answer the following questions:
+..* The number of bits needed for the width and height of screen may change, so we had to parameterize these values. We would allocate an additional 4*(width+height) bits for this reason 
+..* Our basic shapes are triangles and rectangles, so we need another bit to distinguish between the two
 
-### What did you do?
-Your project abstract: one catchy sentence followed by a paragraph or two.  The intended audience should include people that aren't necessarily versed in Computer Architecture, but are technically competent. 
-### Why did you do it?
-A paragraph or so about why the project you chose is worthwhile and interesting.
-### How did you do it?
-This portion can assume an audience that has taken Computer Architecture, but don't let the story you’re telling get bogged down by buzzwords.  A sure sign of a bad engineer is ORA (over reliance on acronyms). 
 
-### How can someone else build on it?
-Include everything necessary to pick up where you left off.  This should include (as appropriate):
+After considering all the things we needed to get all the necessary points for the rasterization step. We made a new module called processInstruction that calculates the points needed given the operation in the instruction. 
 
--	code
--	schematics
--	scripts and build instructions
-- proper attribution for resources used and anything you did not write yourself
--	list of difficulties and ‘gotchas’ while doing this project
-- reflection on the project as a whole as well as your work plan
--	possible TODOs to extend the depth of the project
 
-This should all be posted somewhere accessible, e.g. your project webpage or repository. Please do not literally include these question prompts and then answer them (you're better than that) - instead, use them to check that you've covered all the bases as you tell the story in the way that best makes sense for your project.
+### Second Step - Rasterization
+The rasterization step is able to take in the 3 or 4 points specified by processInstruction and obtain all the pixels within the boundaries of those points. The procedure in stage depends on the shape, because calculating whether the inputs enclose a pixel is slightly more complex for a triangle than for a rectangle. 
 
-## Choosing and Achieving your Goal (30%)
-There is a lot of flexibility available in what your actual final project can be. As a first pass, it needs to satisfy the following criteria:
+(make a diagram for splitting a triangle in a 2-D plane)
 
-1. Build upon what we have learned in class this semester or other "Computer Architecture" topics
-1. Have well-defined criteria for when it is finished and successful
-1. Be achievable within the time allotted
 
-## Possible broad directions:
+### Third Step - Displaying Points on HDMI
+After getting an array of coordinates from the rasterization step, we process that output in the pixel processing step. This step generates HDMI video signal to display a 640 x 480 screen with a 60 Hz refresh rate and 8-bit color. 
 
-- Extending something you started in Computer Architecture
-- Teaching somebody something cool about Computer Architecture
-- Something useful to someone that uses Computer Architecture
-- Something that needs the skills learned in Computer Architecture
-- Something that you can present at Expo that will make people want to take Computer Architecture
+Displaying the 8-bit color involves encoding the 8 bit color values of each pixel using a special 8b/10b encoding algorithm called Transition Minimized Differential Signaling, or TMDS which manipulates the 8 bits of data and adds 2 control bits in order to minimize the number of transitions and balance the average number of 1s and 0s (this reduces noise when the signal is transmitted over physical wire). 
 
-Append one of the following phrases to a cool project idea to make it more CompArch-y:
+The 10 bit TMDS encoded color values are then serialized and synchronized to the HDMI pixel clock and output over 3 differential data lines (one for red, one for green, and one for blue). The pixel clock is also output differentially, following the HDMI specification.
 
-- ... with an FPGA
-- ... in assembly
-- ... on a GPU
-- ... inside a nested series of black boxes
-- ... hardware accelerated
-
-As you put your project plans together, remember that a major portion of the project is communicating it to others.
-
-## Demo (5%)
-We’ll present your project work during the time blocked out for "final exam" period – December 12 from 12 – 3PM.  This is mainly an opportunity to show off and celebrate your great work (small percentage of overall grade), and the details are up to you.
-
-The "default" option is a poster version of your project documentation (along with a running live demo if appropriate), so that folks can walk around in a studio session and see what you did. Maybe you feel that a presentation is more appropriate for your project work. Perhaps a tutorial session with everyone participating makes the most sense. It could be that only a puppet show truly captures the essence of your project. Think about final demo format as you put together your proposal, but you don't need to make a final decision just yet.
-
-Good luck, and have fun!
-
+### Final Step - Transitioning to the FPGA
