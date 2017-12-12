@@ -25,10 +25,10 @@ output reg [(width*height-1)*(width-1):0] pixel_x_coords,
 output reg [(width*height-1)*(height-1):0] pixel_y_coords
 );
 
-reg min_X;
-reg min_Y;
-reg max_X;
-reg max_Y;
+reg[width-1:0] min_X;
+reg[height-1:0] min_Y;
+reg[width-1:0] max_X;
+reg[height-1:0] max_Y;
 
 //Computing min and max x,y values for defining a rectangle that wraps around the triangle
 always @* begin
@@ -73,12 +73,12 @@ always @* begin
     end
 end
 
-reg as_x;
-reg as_y;
-reg x_counter;
-reg y_counter;
-reg s_ab;
-reg pixels_counter;
+reg[width*height:0] as_x;
+reg[width*height:0] as_y;
+reg[width-1:0] x_counter;
+reg[height-1:0] y_counter;
+reg[width*height:0] s_ab;
+reg[width*height:0] pixels_counter;
 
 
 //Go through each pixel in a rectangle that wraps around the given triangle, and determine
@@ -86,6 +86,8 @@ reg pixels_counter;
 //Referenced https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
 initial begin
     pixels_counter = 0;
+    x_counter = min_X;
+    y_counter = min_Y;
     while (y_counter <= max_Y) begin
         while (x_counter <= max_X) begin
             as_x = x_counter - coordA_X;

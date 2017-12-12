@@ -14,7 +14,9 @@ module topModule #(
 
 input [3*(width+height) + 25 + op_size + misc_amt - 1:0] instruction,
 output [2:0] TMDSp, TMDSn, 
-output TMDSp_clock, TMDSn_clock
+output TMDSp_clock, TMDSn_clock,
+output [(width*height-1)*(width-1):0] pixel_x_coords,
+output [(width*height-1)*(height-1):0] pixel_y_coords
 );
 
 wire shape;
@@ -24,8 +26,8 @@ wire [7:0] r, g, b;
 wire [misc_amt-1:0] misc;
 wire [op_size-1:0] op_code;
 
-wire [(width*height-1)*(width-1):0] pixel_x_coords;
-wire [(width*height-1)*(height-1):0] pixel_y_coords;
+//wire [(width*height-1)*(width-1):0] pixel_x_coords;
+//wire [(width*height-1)*(height-1):0] pixel_y_coords;
 
 instructiondecode #(width, height, misc_amt, op_size) ID0(.instruction(instruction), .shape(shape), .x1(x1),.y1(y1),.x2(x2),.y2(y2),.x3(x3),.y3(y3),.r(r),.g(g),.b(b),.misc(misc),.op_code()); //reads in initial instruction
 
