@@ -50,7 +50,7 @@ The rasterization step is able to take in the 3 or 4 points specified by process
 ### Third Step: Displaying Points on HDMI
 After getting an array of coordinates from the rasterization step, we process that output in the pixel processing step. This step generates HDMI video signal to display a 640 x 480 screen with a 60 Hz refresh rate and 8-bit color. 
 
-Displaying the 8-bit color involves encoding the 8 bit color values of each pixel using a special 8b/10b encoding algorithm called Transition Minimized Differential Signaling, or TMDS which manipulates the 8 bits of data and adds 2 control bits in order to minimize the number of transitions and balance the average number of 1s and 0s (this reduces noise when the signal is transmitted over physical wire). ![TMDS Encoding Flow Chart](TMDSflow_chart.jpg)
+Displaying the 8-bit color involves encoding the 8 bit color values of each pixel using a special 8b/10b encoding algorithm called Transition Minimized Differential Signaling, or TMDS which manipulates the 8 bits of data and adds 2 control bits in order to minimize the number of transitions and balance the average number of 1s and 0s (this reduces noise when the signal is transmitted over physical wire). The TMDS algorithm is a two-step encoding process in which all but the least significant bit (which is left unchanged) is either XOR or XNOR transformed with the previous bit based on which one produces fewer transitions. The first control bit (the 9th bit) encodes whether XOR or XNOR was used. The second step involves optionally inverting the lower 8 bits (all of the data bits but not the control bits) based on which results in lower disparity between the number of ones and the number of zeros in the data byte. The 10th bit (most significant bit) encodes whether or not the data byte was inverted. The actual algorithm for implementing this is shown in the flow diagram below (from [EE Wiki Description of TMDS Encoding])  ![TMDS Encoding Flow Chart](TMDSflow_chart.jpg)
 
 The 10 bit TMDS encoded color values are then serialized and synchronized to the HDMI pixel clock and output over 3 differential data lines (one for red, one for green, and one for blue). The pixel clock is also output differentially, following the HDMI specification.
 
@@ -92,4 +92,4 @@ We can extend our GPU to ...
 ### Resources Used
 * [Peter Alexander Greczner’s implementation of a GPU](https://people.ece.cornell.edu/land/courses/eceprojectsland/STUDENTPROJ/2009to2010/pag42/Greczner_Meng_Final.pdf)
 * [How A GPU Works](https://www.cs.cmu.edu/afs/cs/academic/class/15462-f11/www/lec_slides/lec19.pdf)
-* [EE Wiki Description of TMDS Encoding] (https://eewiki.net/pages/viewpage.action?pageId=36569119)
+* [EE Wiki Description of TMDS Encoding](https://eewiki.net/pages/viewpage.action?pageId=36569119)
