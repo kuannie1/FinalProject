@@ -23,6 +23,7 @@ We constructed verilog modules for each of the stages listed above.
 **rasterize**: In rasterization.v. This module generates a 1-D array of all the points needed for the processPixels step
 
 **processPixels**: In processPixels.v, This module prepares the listed pixel values for synthesizing with HDMI
+
     **TMDS_encoder**: In TMDS_encoder.v. This module facilitates processPixels.v in preparing the pixels for displaying on HDMI
 
 
@@ -79,9 +80,10 @@ This project was especially new for each of us, so we faced a few challenges alo
 
 ### Before You Start, Be Sure You Know:
 * If you are starting from scratch, make sure your verilog modules can communicate with each other seamlessly
-* HDMI has tricky input and output specifications, specifically that it does not accept 2-D arrays. This makes working with matrices quite difficult to work with. You will need creative work-arounds
+* The HDMI video specification is tricky, specifically it requires that data be TMDS encoded and then serialized. Even for low resolution HDMI (640 x 480) this serialization requires a very high frequency clock (250 MHz) - timing is crucial and not very forgiving.
 * Using while loops and 2D arrays may be tempting, but they are almost impossible to synthesize in FPGA. Once again, you will need creative work-arounds, such as using a fixed for loop
-* Even if a function compiles in verilog, it may not synthesize once put onto an FPGA
+* If you are thinking of integrating C code with this hardware implementation, you will need to do additional research about high-level synthesis (HDL) to make sure the GPU is synthesizable
+* Even if a function compiles in verilog, it may not synthesize once put onto an FPGA. Also sometimes things will not synthesize the way you think they will. Verifying your results each step of the way is very helpful and saves a lot of time (i.e. checking to make sure the synthesis results seem reasonable before running implementation etc.)
 
 ### Possible Next Steps:
 We can extend our GPU to ...
@@ -94,3 +96,4 @@ We can extend our GPU to ...
 
 ### Resources Used
 * [Peter Alexander Greczner’s implementation of a GPU](https://people.ece.cornell.edu/land/courses/eceprojectsland/STUDENTPROJ/2009to2010/pag42/Greczner_Meng_Final.pdf)
+* [How A GPU Works](https://www.cs.cmu.edu/afs/cs/academic/class/15462-f11/www/lec_slides/lec19.pdf)
