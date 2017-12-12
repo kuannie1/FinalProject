@@ -36,7 +36,7 @@ After considering all the things we needed to get all the necessary points for t
 ### Second Step: Rasterization
 The rasterization step is able to take in the 3 or 4 points specified by processInstruction and obtain all the pixels within the boundaries of those points. The procedure in stage depends on the shape, because calculating whether the inputs enclose a pixel is slightly more complex for a triangle than for a rectangle. 
 
-!(Rasterization Example)(rasterization.jpg)
+![Rasterization Example](rasterization.jpg)
 
 ### Third Step: Displaying Points on HDMI
 After getting an array of coordinates from the rasterization step, we process that output in the pixel processing step. This step generates HDMI video signal to display a 640 x 480 screen with a 60 Hz refresh rate and 8-bit color. 
