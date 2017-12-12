@@ -15,11 +15,19 @@ After deciding to pursue a GPU project, we looked up resources about how typical
 
 ![Flow Chart](diagram.jpg)
 
-We constructed verilog modules for each of the steps listed above. 
+We constructed verilog modules for each of the stages listed above. 
+**instructiondecode**: In instructiondecode.v. This module parses the incoming instruction by index. 
+
+**processInstruction**: In process.v. This module calculates the 4th point of the rectangle if the shape bit insists on it.
+
+**rasterize**: In rasterization.v. This module generates a 1-D array of all the points needed for the processPixels step
+
+**processPixels**: In processPixels.v, This module prepares the listed pixel values for synthesizing with HDMI
+    **TMDS_encoder**: In TMDS_encoder.v. This module facilitates processPixels.v in preparing the pixels for displaying on HDMI
 
 
 ## Our Approach
-### First Step - Processing the Instruction
+### First Step: Processing the Instruction
 We tackled this problem by defining the goal we wanted from our project: the ability to construct basic shapes using a custom instruction set. In the beginning, we defined our instruction set with a few constraints in mind:
 
 * We would represent colors with RGB, which meant that we needed 8 bits for each Red, Green, and Blue value. This means we need 24 bits allocated for these values
@@ -33,20 +41,56 @@ We tackled this problem by defining the goal we wanted from our project: the abi
 After considering all the things we needed to get all the necessary points for the rasterization step. We made a new module called processInstruction that calculates the points needed given the operation in the instruction. 
 
 
-### Second Step - Rasterization
+### Second Step: Rasterization
 The rasterization step is able to take in the 3 or 4 points specified by processInstruction and obtain all the pixels within the boundaries of those points. The procedure in stage depends on the shape, because calculating whether the inputs enclose a pixel is slightly more complex for a triangle than for a rectangle. 
 
+![Rasterization Example](rasterization.png)
 
-
-### Third Step - Displaying Points on HDMI
+### Third Step: Displaying Points on HDMI
 After getting an array of coordinates from the rasterization step, we process that output in the pixel processing step. This step generates HDMI video signal to display a 640 x 480 screen with a 60 Hz refresh rate and 8-bit color. 
 
 Displaying the 8-bit color involves encoding the 8 bit color values of each pixel using a special 8b/10b encoding algorithm called Transition Minimized Differential Signaling, or TMDS which manipulates the 8 bits of data and adds 2 control bits in order to minimize the number of transitions and balance the average number of 1s and 0s (this reduces noise when the signal is transmitted over physical wire). 
 
 The 10 bit TMDS encoded color values are then serialized and synchronized to the HDMI pixel clock and output over 3 differential data lines (one for red, one for green, and one for blue). The pixel clock is also output differentially, following the HDMI specification.
 
-### Final Step - Transitioning to the FPGA
-
+### Final Step: Transitioning to the FPGA
+When synthesizing our code onto the FPGA, we needed a TMDS function as well as to generate a clock. This gave us an opportunity to delve into the world of Vivado libraries.
 
 ### Verifying These Steps
-We constructed testbenches for each component to make sure they worked as expected. 
+We constructed testbenches for each component to make sure they worked as expected. We approached first and second steps by inputting predefined instructions for various screen widths and heights. These predefined instructions would make it easy for us to see if we obtained the right coordinates, shape value, and color values.
+
+(Show an example of a instructiondecode test)
+
+After verifying the working conditiosn of the individual processinstruction, instructiondecode, and rasterize modules, we constructed a top-level module that initializes all of these modules and used GTKWave to make sure the outputs behave as expected. 
+
+(show GTKWave Screenshots here)
+
+## Some Results
+
+
+
+
+
+
+
+
+## Trying This At Home
+This project was especially new for each of us, so we faced a few challenges along the way. We would like to explain a few of those challenges, describe possible next steps, and thank some of the resources we've used.
+
+### Before You Start, Be Sure You Know:
+* If you are starting from scratch, make sure your verilog modules can communicate with each other seamlessly
+* HDMI has tricky input and output specifications, specifically that it does not accept 2-D arrays. This makes working with matrices quite difficult to work with. You will need creative work-arounds
+* Using while loops and 2D arrays may be tempting, but they are almost impossible to synthesize in FPGA. Once again, you will need creative work-arounds, such as using a fixed for loop
+* Even if a function compiles in verilog, it may not synthesize once put onto an FPGA
+
+### Possible Next Steps:
+We can extend our GPU to ...
+
+* Draw more shapes and perform actions on them. Our original goal was to create a GPU that could draw a rectangle or triangle and be able to perform different operations on them. We were not able to implement because of the difficulties of performing transformations in verilog. However, in the future we would have liked to have been able to rotate and flip multiple different shapes that we are able to define.
+
+* Run multiple processes at once. In a real GPU, there are many cores that are able to perform in parallel. This would have enabled us to draw multiple shapes at once, or perform operations on a shape while another was being drawn. This would have made our GPU behave much more similarly to an actual GPU. While we originally intended to have one or two cores running in parallel, this was definitely a stretch goal for us.
+
+* Communicate with a CPU. While, for the purposes of this project, we blackboxed the CPU, in a real computer, the GPU and CPU interface with each other, with the CPU giving the GPU commands, while the GPU performs calculations and executes the commands. In the future, it would have been cool working with that interface between parts.
+
+### Resources Used
+* 
