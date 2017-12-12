@@ -50,12 +50,12 @@ The rasterization step is able to take in the 3 or 4 points specified by process
 ### Third Step: Displaying Points on HDMI
 After getting an array of coordinates from the rasterization step, we process that output in the pixel processing step. This step generates HDMI video signal to display a 640 x 480 screen with a 60 Hz refresh rate and 8-bit color. 
 
-Displaying the 8-bit color involves encoding the 8 bit color values of each pixel using a special 8b/10b encoding algorithm called Transition Minimized Differential Signaling, or TMDS which manipulates the 8 bits of data and adds 2 control bits in order to minimize the number of transitions and balance the average number of 1s and 0s (this reduces noise when the signal is transmitted over physical wire). 
+Displaying the 8-bit color involves encoding the 8 bit color values of each pixel using a special 8b/10b encoding algorithm called Transition Minimized Differential Signaling, or TMDS which manipulates the 8 bits of data and adds 2 control bits in order to minimize the number of transitions and balance the average number of 1s and 0s (this reduces noise when the signal is transmitted over physical wire). ![TMDS Encoding Flow Chart](TMDSflow_chart.jpg)
 
 The 10 bit TMDS encoded color values are then serialized and synchronized to the HDMI pixel clock and output over 3 differential data lines (one for red, one for green, and one for blue). The pixel clock is also output differentially, following the HDMI specification.
 
 ### Final Step: Transitioning to the FPGA
-When synthesizing our code onto the FPGA, we needed a TMDS function as well as to generate a clock. This gave us an opportunity to delve into the world of Vivado libraries.
+When synthesizing our code onto the FPGA, we needed to set up port definitions in a Vivado constraints file as well as set up a Mixed-Mode Clock Manager (MMCM) module to generate both the 25 MHz pixel clock and the 250 MHz TMDS serializer clocks from the 125 MHz system clock.
 
 ## Some Results
 We constructed testbenches for each component to make sure they worked as expected. We approached first and second steps by inputting predefined instructions for various screen widths and heights. These predefined instructions would make it easy for us to see if we obtained the right coordinates, shape value, and color values.
@@ -75,7 +75,7 @@ This project was especially new for each of us, so we faced a few challenges alo
 
 ### Before You Start, Be Sure You Know:
 * If you are starting from scratch, make sure your verilog modules can communicate with each other seamlessly
-* The HDMI video specification is tricky, specifically it requires that data be TMDS encoded and then serialized. Even for low resolution HDMI (640 x 480) this serialization requires a very high frequency clock (250 MHz) - timing is crucial and not very forgiving.
+* The HDMI video specification is tricky, specifically it requires that data be TMDS encoded and then serialized. Even for low resolution HDMI (640 x 480) the serialization necessary to transmit the 10 bit encoded color data each rising edge of the pixel clock requires a very high frequency clock (250 MHz) that is synchronized to the pixel clock - timing is crucial and not very forgiving.
 * Using while loops and 2D arrays may be tempting, but they are almost impossible to synthesize in FPGA. Once again, you will need creative work-arounds, such as using a fixed for loop
 * If you are thinking of integrating C code with this hardware implementation, you will need to do additional research about high-level synthesis (HDL) to make sure the GPU is synthesizable
 * Even if a function compiles in verilog, it may not synthesize once put onto an FPGA. Also sometimes things will not synthesize the way you think they will. Verifying your results each step of the way is very helpful and saves a lot of time (i.e. checking to make sure the synthesis results seem reasonable before running implementation etc.)
@@ -83,7 +83,7 @@ This project was especially new for each of us, so we faced a few challenges alo
 ### Possible Next Steps:
 We can extend our GPU to ...
 
-* Draw more shapes and perform actions on them. Our original goal was to create a GPU that could draw a rectangle or triangle and be able to perform different operations on them. We were not able to implement because of the difficulties of performing transformations in verilog. However, in the future we would have liked to have been able to rotate and flip multiple different shapes that we are able to define.
+* Draw more shapes and perform transformations on them. Our original goal was to create a GPU that could draw a rectangle or triangle and be able to perform different operations on them (such as scaling, rotation, mirroring etc.). We were not able to implement these functions because of the difficulties of performing transformations in verilog. However, in the future we would have liked to have been able to rotate and flip multiple different shapes that we are able to define.
 
 * Run multiple processes at once. In a real GPU, there are many cores that are able to perform in parallel. This would have enabled us to draw multiple shapes at once, or perform operations on a shape while another was being drawn. This would have made our GPU behave much more similarly to an actual GPU. While we originally intended to have one or two cores running in parallel, this was definitely a stretch goal for us.
 
@@ -92,3 +92,4 @@ We can extend our GPU to ...
 ### Resources Used
 * [Peter Alexander Greczner’s implementation of a GPU](https://people.ece.cornell.edu/land/courses/eceprojectsland/STUDENTPROJ/2009to2010/pag42/Greczner_Meng_Final.pdf)
 * [How A GPU Works](https://www.cs.cmu.edu/afs/cs/academic/class/15462-f11/www/lec_slides/lec19.pdf)
+* [EE Wiki Description of TMDS Encoding] (https://eewiki.net/pages/viewpage.action?pageId=36569119)
