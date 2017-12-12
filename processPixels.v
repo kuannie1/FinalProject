@@ -14,6 +14,7 @@ module processPixels
 	input [7:0] red_vect,
 	input [7:0] green_vect,
 	input [7:0] blue_vect,
+	input locked, // high when clocks are stable
 	input pixclk, // 25MHz pixel clock
 	input clk_TMDS, // 250 MHz clock
 	output [2:0] TMDSp, TMDSn, // differential high speed data lines
@@ -32,7 +33,6 @@ reg [9:0] TMDS_shift_blue=0;
 reg TMDS_shift_load=0;
 reg [7:0] background_red = 0, background_green = 0, background_blue = 0; //background color values
 integer i = 0;
-
 
 //Want all of these things to happen at once on every pixel clock positive edge:
 always @(posedge pixclk) begin
@@ -73,7 +73,7 @@ always @(posedge clk_TMDS) begin
 	TMDS_bit_counter <= (TMDS_bit_counter==4'd9) ? 4'd0 : TMDS_bit_counter+4'd1;	// If TMDS bit counter == 9, reset to 0, otherwise increment by 1
 end
 
-//differential output buffers, saw recommendation/usage case in Xilinx forum post
+		//differential output buffers, saw recommendation/usage case in Xilinx forum post
 OBUFDS OBUFDS_red  (.I(TMDS_shift_red  [0]), .O(TMDSp[2]), .OB(TMDSn[2])); //because these are high speed differential signals that will be used offboard I read somewhere that you want
 OBUFDS OBUFDS_green(.I(TMDS_shift_green[0]), .O(TMDSp[1]), .OB(TMDSn[1])); //Vivado to synthesize with a high(ish) current output buffer this "hardcodes" a differential output buffer
 OBUFDS OBUFDS_blue (.I(TMDS_shift_blue [0]), .O(TMDSp[0]), .OB(TMDSn[0])); //Do this for all of the TMDS signals
