@@ -19,7 +19,7 @@ After deciding to pursue a GPU project, we looked up resources about how typical
 
 
 ## Our Approach
-###First Step - Processing the Instruction
+### First Step - Processing the Instruction
 We tackled this problem by defining the goal we wanted from our project: the ability to construct basic shapes using a custom instruction set. In the beginning, we defined our instruction set with a few constraints in mind:
 
 * We would represent colors with RGB, which meant that we needed 8 bits for each Red, Green, and Blue value. This means we need 24 bits allocated for these values
