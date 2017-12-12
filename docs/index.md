@@ -61,7 +61,7 @@ We constructed testbenches for each component to make sure they worked as expect
 
 (Show an example of a instructiondecode test)
 
-After verifying the working conditiosn of the individual processinstruction, instructiondecode, and rasterize modules, we constructed a top-level module that initializes all of these modules and used GTKWave to make sure the outputs behave as expected. 
+After verifying the working condition of the individual processinstruction, instructiondecode, and rasterize modules, we constructed a top-level module that initializes all of these modules and used GTKWave to make sure the outputs behave as expected. 
 
 (show GTKWave Screenshots here)
 
