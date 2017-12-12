@@ -13,9 +13,9 @@ After deciding to pursue a GPU project, we looked up resources about how typical
 
 ## How Our GPU Works
 
+![Flow Chart](diagram.jpg)
 
-
-
+We constructed verilog modules for each of the steps listed above. 
 
 
 ## Our Approach
@@ -46,3 +46,7 @@ Displaying the 8-bit color involves encoding the 8 bit color values of each pixe
 The 10 bit TMDS encoded color values are then serialized and synchronized to the HDMI pixel clock and output over 3 differential data lines (one for red, one for green, and one for blue). The pixel clock is also output differentially, following the HDMI specification.
 
 ### Final Step - Transitioning to the FPGA
+
+
+### Verifying These Steps
+We constructed testbenches for each component to make sure they worked as expected. 
