@@ -15,6 +15,7 @@ module processPixels
 	input [7:0] green_vect,
 	input [7:0] blue_vect,
 	input pixclk, // 25MHz pixel clock
+	input clk_TMDS, // 250 MHz clock
 	output [2:0] TMDSp, TMDSn, // differential high speed data lines
 	output TMDSp_clock, TMDSn_clock //differential clock for high speed data lines
 );
@@ -61,12 +62,6 @@ TMDS_encoder encode_red(.clk(pixclk), .VD(red), .CD(2'b00), .VDE(DrawArea), .TMD
 TMDS_encoder encode_green(.clk(pixclk), .VD(green), .CD(2'b00), .VDE(DrawArea), .TMDS(TMDS_green));			// reduces number of transitions and noise
 TMDS_encoder encode_blue(.clk(pixclk), .VD(blue), .CD({vSync,hSync}), .VDE(DrawArea), .TMDS(TMDS_blue));	// specifided in the DVI/HDMI specification
 
-
-// generate 250 MHz clock by multiplying 25 MHz pixel clock by 10
-// this clock is needed because for each pixel we need 10 bits of color data to be clocked in
-// (8 bits of actual data + the 2 bit overhead for TMDS encoding). Pixel clock is 25 MHz so this clock
-// needs to be 250 MHz
-DCM_SP #(.CLKFX_MULTIPLY(10)) DCM_TMDS_inst(.CLKIN(pixclk), .CLKFX(clk_TMDS), .RST(1'b0));
 
 
 always @(posedge clk_TMDS) begin
