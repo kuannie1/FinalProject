@@ -1,4 +1,4 @@
-`include "process.v"
+//`include "process.v"
 
 /*
 	Convert the input coordinates into pixels
@@ -11,17 +11,18 @@ module rasterize #(
     parameter width = 4,
     parameter height = 3
 ) (
-input coordA_X,
-input coordA_Y,
-input coordB_X,
-input coordB_Y,
-input coordC_X,
-input coordC_Y,
-input op_code,
+input [width-1:0]  coordA_X,
+input [height-1:0] coordA_Y,
+input [width-1:0] coordB_X,
+input [height-1:0] coordB_Y,
+input [width-1:0] coordC_X,
+input [height-1:0] coordC_Y,
 input shape,
 //The output pixels register is always large enough to hold all coordinate values on the screen
-output reg [width*height-1:0] pixel_x_coords,
-output reg [width*height-1:0] pixel_y_coords
+//Since 2d wires are not supported as output in verilog, coordinates have to be sent serially
+//For x-coord parse every width-1 bits; y-coord every height-1 bits
+output reg [(width*height-1)*(width-1):0] pixel_x_coords,
+output reg [(width*height-1)*(height-1):0] pixel_y_coords
 );
 
 reg min_X;
