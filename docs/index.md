@@ -66,7 +66,7 @@ Wave-Viewer Output For the Instruction Decode Testbench
 
 After verifying the working condition of the individual processinstruction, instructiondecode, and rasterize modules, we constructed a top-level module that initializes all of these modules and used GTKWave to make sure the outputs behave as expected. 
 
-We also tried synthesizing our top level module to test the HDMI display and TMDS encoding modules. We successfully generated HDMI video signals, however there is some sort of timing misalignment that is creating unwanted gradients in the display background color as seen in the image below.
+We also tried synthesizing our top level module to test the HDMI display and TMDS encoding modules. We successfully generated HDMI video signals, however there is some sort of timing misalignment that is creating unwanted gradients in the display background color as seen in the image below. This prevented us from integrating our rasterization module with pixel processing/TMDS encoding and prevented us from displaying shapes on a physical screen.
 ![Output from our GPU being Displayed on HDMI Screen](HDMI_display.jpg)
 
 
