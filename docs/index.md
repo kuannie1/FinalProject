@@ -81,6 +81,7 @@ This project was especially new for each of us, so we faced a few challenges alo
 * If you are starting from scratch, make sure your verilog modules can communicate with each other seamlessly
 * HDMI has tricky input and output specifications, specifically that it does not accept 2-D arrays. This makes working with matrices quite difficult to work with. You will need creative work-arounds
 * Using while loops and 2D arrays may be tempting, but they are almost impossible to synthesize in FPGA. Once again, you will need creative work-arounds, such as using a fixed for loop
+* If you are thinking of integrating C code with this hardware implementation, you will need to do additional research about high-level synthesis (HDL) to make sure the GPU is synthesizable
 * Even if a function compiles in verilog, it may not synthesize once put onto an FPGA
 
 ### Possible Next Steps:
