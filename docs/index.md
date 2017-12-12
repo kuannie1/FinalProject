@@ -67,7 +67,7 @@ Wave-Viewer Output For the Instruction Decode Testbench
 After verifying the working condition of the individual processinstruction, instructiondecode, and rasterize modules, we constructed a top-level module that initializes all of these modules and used GTKWave to make sure the outputs behave as expected. 
 
 
-
+![Output from our GPU being Displayed on HDMI Screen](HDMI_display.jpg)
 
 
 ## Trying This At Home
