@@ -88,7 +88,7 @@ This project was especially new for each of us, so we faced a few challenges alo
 ### Possible Next Steps:
 We can extend our GPU to ...
 
-* Draw more shapes and perform actions on them. Our original goal was to create a GPU that could draw a rectangle or triangle and be able to perform different operations on them. We were not able to implement because of the difficulties of performing transformations in verilog. However, in the future we would have liked to have been able to rotate and flip multiple different shapes that we are able to define.
+* Draw more shapes and perform transformations on them. Our original goal was to create a GPU that could draw a rectangle or triangle and be able to perform different operations on them (such as scaling, rotation, mirroring etc.). We were not able to implement these functions because of the difficulties of performing transformations in verilog. However, in the future we would have liked to have been able to rotate and flip multiple different shapes that we are able to define.
 
 * Run multiple processes at once. In a real GPU, there are many cores that are able to perform in parallel. This would have enabled us to draw multiple shapes at once, or perform operations on a shape while another was being drawn. This would have made our GPU behave much more similarly to an actual GPU. While we originally intended to have one or two cores running in parallel, this was definitely a stretch goal for us.
 
