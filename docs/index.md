@@ -24,7 +24,7 @@ We constructed verilog modules for each of the stages listed above.
 
 **processPixels**: In processPixels.v, This module prepares the listed pixel values for synthesizing with HDMI
 
-    **TMDS_encoder**: In TMDS_encoder.v. This module facilitates processPixels.v in preparing the pixels for displaying on HDMI
+**TMDS_encoder**: In TMDS_encoder.v. This module facilitates processPixels.v in preparing the pixels for displaying on HDMI
 
 
 ## Our Approach
