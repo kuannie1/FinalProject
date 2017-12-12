@@ -49,8 +49,13 @@ The 10 bit TMDS encoded color values are then serialized and synchronized to the
 
 
 ### Verifying These Steps
-We constructed testbenches for each component to make sure they worked as expected. 
+We constructed testbenches for each component to make sure they worked as expected. We approached first and second steps by inputting predefined instructions for various screen widths and heights. These predefined instructions would make it easy for us to see if we obtained the right coordinates, shape value, and color values.
 
+(Show an example of a instructiondecode test)
+
+After verifying the working conditiosn of the individual processinstruction, instructiondecode, and rasterize modules, we constructed a top-level module that initializes all of these modules and used GTKWave to make sure the outputs behave as expected. 
+
+(show GTKWave Screenshots here)
 
 ## Some Results
 
