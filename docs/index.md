@@ -6,22 +6,27 @@ We implemented a rudimentary graphics processing unit capable of creating and di
 
 The graphics processing unit that we designed are comprised of few simple and basic components that does basic GPU functionalities. Those components are instruction decoder, instruction processor, rasterizer, and pixel display module. With the GPU that we created, we can turn a shape defined in terms of coordinates into a collection of pixels that can be showed in a display.
 
-
+## Our Story
 We decided to work on GPU’s because we wanted to build upon the skills that we had learned from completing our CPU’s. We wanted to make something more tangible that we had built as well. We also wanted to create something using verilog as well. We came across a description of what a GPU was and thought that it would be cool to work on a part that is so necessary for contemporary computers.
 
-After deciding to pursue a GPU project, we looked up resources about how typical GPUs work. We were particularly inspired by Peter Alexander Greczner’s implementation of a GPU.*, because he used a reduced instruction set to construct pictures out of basic shapes (triangles, rectangles, etc). Using this as an inspiration, we decided on a similar, reduced instruction set consisting of drawing rectangles and triangles and filling them in with specific colors.
-
-* His work can be found here: https://people.ece.cornell.edu/land/courses/eceprojectsland/STUDENTPROJ/2009to2010/pag42/Greczner_Meng_Final.pdf
+After deciding to pursue a GPU project, we looked up resources about how typical GPUs work. We were particularly inspired by [Peter Alexander Greczner’s implementation of a GPU](https://people.ece.cornell.edu/land/courses/eceprojectsland/STUDENTPROJ/2009to2010/pag42/Greczner_Meng_Final.pdf), because he used a reduced instruction set to construct pictures out of basic shapes (triangles, rectangles, etc). Using this as an inspiration, we decided on a similar, reduced instruction set consisting of drawing rectangles and triangles and filling them in with specific colors.
 
 ## How Our GPU Works
 
+
+
+
+
+
+## Our Approach
 ###First Step - Processing the Instruction
 We tackled this problem by defining the goal we wanted from our project: the ability to construct basic shapes using a custom instruction set. In the beginning, we defined our instruction set with a few constraints in mind:
 
-..* We would represent colors with RGB, which meant that we needed 8 bits for each Red, Green, and Blue value. This means we need 24 bits allocated for these values
+* We would represent colors with RGB, which meant that we needed 8 bits for each Red, Green, and Blue value. This means we need 24 bits allocated for these values
 
-..* The number of bits needed for the width and height of screen may change, so we had to parameterize these values. We would allocate an additional 4*(width+height) bits for this reason 
-..* Our basic shapes are triangles and rectangles, so we need another bit to distinguish between the two
+* The number of bits needed for the width and height of screen may change, so we had to parameterize these values. We would allocate an additional 4*(width+height) bits for this reason 
+
+* Our basic shapes are triangles and rectangles, so we need another bit to distinguish between the two
 
 
 After considering all the things we needed to get all the necessary points for the rasterization step. We made a new module called processInstruction that calculates the points needed given the operation in the instruction. 
