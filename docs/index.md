@@ -57,18 +57,6 @@ The 10 bit TMDS encoded color values are then serialized and synchronized to the
 ### Final Step: Transitioning to the FPGA
 When synthesizing our code onto the FPGA, we needed to set up port definitions in a Vivado constraints file as well as set up a Mixed-Mode Clock Manager (MMCM) module to generate both the 25 MHz pixel clock and the 250 MHz TMDS serializer clocks from the 125 MHz system clock.
 
-<<<<<<< HEAD
-### Verifying These Steps
-We constructed testbenches for each component to make sure they worked as expected. We approached first and second steps by inputting predefined instructions for various screen widths and heights. These predefined instructions would make it easy for us to see if we obtained the right coordinates, shape value, and color values.
-
-(Show an example of a instructiondecode test)
-
-After verifying the working condition of the individual processinstruction, instructiondecode, and rasterize modules, we constructed a top-level module that initializes all of these modules and used GTKWave to make sure the outputs behave as expected. 
-
-![Instruction Decode GTK Wave](idgtk.png)
-
-=======
->>>>>>> 4ded55724cc6093d6ea34b6ac1e3e840b6872bf9
 ## Some Results
 We constructed testbenches for each component to make sure they worked as expected. We approached first and second steps by inputting predefined instructions for various screen widths and heights. These predefined instructions would make it easy for us to see if we obtained the right coordinates, shape value, and color values.
 
@@ -79,7 +67,7 @@ Wave-Viewer Output For the Instruction Decode Testbench
 After verifying the working condition of the individual processinstruction, instructiondecode, and rasterize modules, we constructed a top-level module that initializes all of these modules and used GTKWave to make sure the outputs behave as expected. 
 
 
-
+![Output from our GPU on HDMI Screen](HDMI_display.jpg)
 
 
 ## Trying This At Home
